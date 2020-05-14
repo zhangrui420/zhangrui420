@@ -1,0 +1,52 @@
+public void register() throws IOException
+	{
+		//判断信息是否补全
+		if (jtf1.getText().isEmpty()||jtf2.getText().isEmpty()||
+				jtf3.getText().isEmpty()||jtf4.getText().isEmpty()||jtf5.getText().isEmpty())
+		{
+			JOptionPane.showMessageDialog(null, "信息有空缺，请补全！","消息提示",JOptionPane.WARNING_MESSAGE);
+		}
+		//判断身份证号是否为18位
+		else if (jtf2.getText().length()!=18)
+		{
+			JOptionPane.showMessageDialog(null, "非法身份证号，请重新输入！","消息提示",JOptionPane.WARNING_MESSAGE);
+		}
+		//判断金额是否合法
+		else if (!new Check().checkmoney(jtf5.getText()))
+		{  
+			JOptionPane.showMessageDialog(null, "存入金额不合法!","消息提示",JOptionPane.WARNING_MESSAGE);
+		}
+		//判断姓名是否为全中文
+		else if (!new Check().checkname(jtf1.getText()))
+		{
+			JOptionPane.showMessageDialog(null, "姓名不合法！","消息提示",JOptionPane.WARNING_MESSAGE);
+		}
+		//判断账户名和密码是否包含中文
+		else if (new Check().checkcountname(jtf3.getText())||new Check().checkcountname(jtf4.getText()))
+		{
+			JOptionPane.showMessageDialog(null, "用户名或密码存在中文，不合法!","消息提示",JOptionPane.WARNING_MESSAGE);
+		}
+		//满足要求
+		else if (!jtf1.getText().isEmpty()&&!jtf2.getText().isEmpty()&&
+				!jtf3.getText().isEmpty()&&!jtf4.getText().isEmpty()&&!jtf5.getText().isEmpty())
+		{
+			//注册成功， 打包为信息数组传递给UserMessage进行更新操作
+			String []message = new String[5]; 
+			message[0] = jtf1.getText();   //获取输入的文本信息
+			message[1] = jtf2.getText();
+			message[2] = jtf3.getText();
+			message[3] = jtf4.getText();
+			message[4] = jtf5.getText();
+			if (!new Check().check2(message[2]))   //调用Check的check方法检测用户是否存在， 如果不存在执行
+			{
+				new UserMessage().write(message);   //调用UserMseeage的write方法进行写操作， 将信息格式化存入
+				JOptionPane.showMessageDialog(null,"注册成功！","提示消息",JOptionPane.WARNING_MESSAGE);
+				dispose();  //使窗口消失
+			}
+			else 
+			{
+				JOptionPane.showMessageDialog(null,"账号已存在，请重新输入！","提示消息",JOptionPane.WARNING_MESSAGE);
+				//dispose();
+			}
+		}
+	}
